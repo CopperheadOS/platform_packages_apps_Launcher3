@@ -108,7 +108,7 @@ public class QsbContainerView extends FrameLayout {
 
         private View createQsb(ViewGroup container) {
             Activity activity = getActivity();
-            mWidgetInfo = getSearchWidgetProvider(activity);
+            //mWidgetInfo = getSearchWidgetProvider(activity);
             if (mWidgetInfo == null) {
                 // There is no search provider, just show the default widget.
                 return QsbWidgetHostView.getDefaultView(container);
