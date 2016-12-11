@@ -120,7 +120,7 @@ public class QsbContainerView extends FrameLayout {
         }
 
         private View createQsb(ViewGroup container) {
-            mWidgetInfo = getSearchWidgetProvider();
+            //mWidgetInfo = getSearchWidgetProvider();
             if (mWidgetInfo == null) {
                 // There is no search provider, just show the default widget.
                 return getDefaultView(container, false /* show setup icon */);
