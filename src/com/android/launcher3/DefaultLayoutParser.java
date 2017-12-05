@@ -13,15 +13,18 @@ import android.content.res.Resources;
 import android.content.res.XmlResourceParser;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.ArrayMap;
 import android.util.Log;
+
 import com.android.launcher3.LauncherSettings.Favorites;
 import com.android.launcher3.util.Thunk;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.util.List;
+
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Implements the layout parser with rules for internal layouts and partner layouts.
@@ -52,20 +55,20 @@ public class DefaultLayoutParser extends AutoInstallsLayout {
     }
 
     @Override
-    protected ArrayMap<String, TagParser> getFolderElementsMap() {
+    protected HashMap<String, TagParser> getFolderElementsMap() {
         return getFolderElementsMap(mSourceRes);
     }
 
-    @Thunk ArrayMap<String, TagParser> getFolderElementsMap(Resources res) {
-        ArrayMap<String, TagParser> parsers = new ArrayMap<>();
+    @Thunk HashMap<String, TagParser> getFolderElementsMap(Resources res) {
+        HashMap<String, TagParser> parsers = new HashMap<String, TagParser>();
         parsers.put(TAG_FAVORITE, new AppShortcutWithUriParser());
         parsers.put(TAG_SHORTCUT, new UriShortcutParser(res));
         return parsers;
     }
 
     @Override
-    protected ArrayMap<String, TagParser> getLayoutElementsMap() {
-        ArrayMap<String, TagParser> parsers = new ArrayMap<>();
+    protected HashMap<String, TagParser> getLayoutElementsMap() {
+        HashMap<String, TagParser> parsers = new HashMap<String, TagParser>();
         parsers.put(TAG_FAVORITE, new AppShortcutWithUriParser());
         parsers.put(TAG_APPWIDGET, new AppWidgetParser());
         parsers.put(TAG_SHORTCUT, new UriShortcutParser(mSourceRes));

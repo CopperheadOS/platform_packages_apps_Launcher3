@@ -31,9 +31,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Process;
 import android.text.TextUtils;
-import android.util.ArrayMap;
 import android.util.LongSparseArray;
 import android.util.SparseBooleanArray;
+
 import com.android.launcher3.AutoInstallsLayout.LayoutParserCallback;
 import com.android.launcher3.DefaultLayoutParser;
 import com.android.launcher3.LauncherAppState;
@@ -51,8 +51,10 @@ import com.android.launcher3.config.FeatureFlags;
 import com.android.launcher3.logging.FileLog;
 import com.android.launcher3.model.GridSizeMigrationTask;
 import com.android.launcher3.util.LongArrayMap;
+
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 
 /**
@@ -132,7 +134,7 @@ public class ImportDataTask {
         String profileId = Long.toString(UserManagerCompat.getInstance(mContext)
                 .getSerialNumberForUser(Process.myUserHandle()));
 
-        boolean createEmptyRowOnFirstScreen;
+        boolean createEmptyRowOnFirstScreen = false;
         if (FeatureFlags.QSB_ON_FIRST_SCREEN) {
             try (Cursor c = mContext.getContentResolver().query(mOtherFavoritesUri, null,
                     // get items on the first row of the first screen
@@ -326,9 +328,9 @@ public class ImportDataTask {
         }
     }
 
-    private static String getPackage(Intent intent) {
+    private static final String getPackage(Intent intent) {
         return intent.getComponent() != null ? intent.getComponent().getPackageName()
-            : intent.getPackage();
+                : intent.getPackage();
     }
 
     /**
@@ -378,7 +380,7 @@ public class ImportDataTask {
         return false;
     }
 
-    private static int getMyHotseatLayoutId(Context context) {
+    private static final int getMyHotseatLayoutId(Context context) {
         return LauncherAppState.getIDP(context).numHotseatIcons <= 5
                 ? R.xml.dw_phone_hotseat
                 : R.xml.dw_tablet_hotseat;
@@ -393,9 +395,9 @@ public class ImportDataTask {
         }
 
         @Override
-        protected ArrayMap<String, TagParser> getLayoutElementsMap() {
+        protected HashMap<String, TagParser> getLayoutElementsMap() {
             // Only allow shortcut parsers
-            ArrayMap<String, TagParser> parsers = new ArrayMap<>();
+            HashMap<String, TagParser> parsers = new HashMap<String, TagParser>();
             parsers.put(TAG_FAVORITE, new AppShortcutWithUriParser());
             parsers.put(TAG_SHORTCUT, new UriShortcutParser(mSourceRes));
             parsers.put(TAG_RESOLVE, new ResolveParser());
@@ -407,7 +409,7 @@ public class ImportDataTask {
      * {@link LayoutParserCallback} which adds items in empty hotseat spots.
      */
     private static class HotseatParserCallback implements LayoutParserCallback {
-        private final HashSet<String> mExistingApps;
+        private final HashSet<String> mExisitingApps;
         private final LongArrayMap<Object> mExistingItems;
         private final ArrayList<ContentProviderOperation> mOutOps;
         private final int mRequiredSize;
@@ -416,7 +418,7 @@ public class ImportDataTask {
         HotseatParserCallback(
                 HashSet<String> existingApps, LongArrayMap<Object> existingItems,
                 ArrayList<ContentProviderOperation> outOps, int startItemId, int requiredSize) {
-            mExistingApps = existingApps;
+            mExisitingApps = existingApps;
             mExistingItems = existingItems;
             mOutOps = outOps;
             mRequiredSize = requiredSize;
@@ -441,11 +443,11 @@ public class ImportDataTask {
                 return 0;
             }
             String pkg = getPackage(intent);
-            if (pkg == null || mExistingApps.contains(pkg)) {
+            if (pkg == null || mExisitingApps.contains(pkg)) {
                 // The item does not target an app or is already in hotseat.
                 return 0;
             }
-            mExistingApps.add(pkg);
+            mExisitingApps.add(pkg);
 
             // find next vacant spot.
             long screen = 0;
