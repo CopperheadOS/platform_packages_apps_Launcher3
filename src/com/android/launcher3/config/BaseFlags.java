@@ -31,7 +31,7 @@ abstract class BaseFlags {
     public static final boolean IS_DOGFOOD_BUILD = false;
 
     // Custom flags go below this
-    public static boolean LAUNCHER3_DISABLE_ICON_NORMALIZATION = true;
+    public static boolean LAUNCHER3_DISABLE_ICON_NORMALIZATION = false;
     public static boolean LAUNCHER3_LEGACY_FOLDER_ICON = false;
     public static boolean LAUNCHER3_DISABLE_PINCH_TO_OVERVIEW = false;
     public static boolean LAUNCHER3_NEW_FOLDER_ANIMATION = true;
